@@ -56,7 +56,7 @@ public class Connection extends Thread {
         try {
             String clientMsg;
 
-            // listen for messages until the clients closes the connection
+            // listen for messages until the client closes the connection
             while((clientMsg = this.clientReader.readLine()) != null) {
 
                 // check if client sent an event-message
