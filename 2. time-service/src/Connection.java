@@ -61,9 +61,11 @@ public class Connection extends Thread {
 
                 // check if client sent an event-message
                 if(clientMsg.equals("date")) {
+                    System.out.println("Client [" + this.clientId + "] requested the current date");
                     sendMsg(Clock.date());
                 }
                 else if(clientMsg.equals("time")) {
+                    System.out.println("Client [" + this.clientId + "] requested the current time");
                     sendMsg(Clock.time());
                 }
                 else {

@@ -8,7 +8,7 @@ import java.net.Socket;
  */
 public class Server {
 
-    private final int serverPort = 10076;
+    private final int serverPort = 10075;
     private ServerSocket server = null;
     private int clientCounter = 0;
 
