@@ -3,7 +3,8 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-        final int n = 10;
+        // amount of results/Threads
+        final int n = 100;
 
         // start the execution
         execute(n);
@@ -24,8 +25,6 @@ public class Main {
             Calc calcF = new Calc(i, calcR);
             calcF.start();
         }
-
-        System.out.print(calcR.getResults());
 
         return calcR.getResults();
     }
