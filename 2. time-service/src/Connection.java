@@ -43,7 +43,7 @@ public class Connection extends Thread {
 
     public void run() {
         // only execute Thread as long as the client is ok/connected
-        //while(this.clientOk) {
+        if(this.clientOk) {
 
             try {
                 // welcome the new client
@@ -57,7 +57,7 @@ public class Connection extends Thread {
                 this.clientOk = false;
             }
 
-        //}
+        }
     }
 
     /**
