@@ -95,13 +95,15 @@ public class TimeServiceClient {
         return time;
     }
 
+    /**
+     * Closes the connection to the socket-server and output-stream
+     */
     public void closeConnection() {
         try {
             this.serverWriter.close();
             this.socket.close();
         } catch(IOException e) {
             e.printStackTrace();
-            System.exit(1);
         }
     }
 
