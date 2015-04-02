@@ -37,6 +37,7 @@ public class TimeServiceClient {
             this.socket = new Socket(this.socketAddress, this.socketPort);
         } catch(IOException e) {
             e.printStackTrace();
+            System.exit(1);
         }
 
         // set writer & reader
@@ -47,6 +48,7 @@ public class TimeServiceClient {
             this.serverReader = new BufferedReader(new InputStreamReader(serverInput));
         } catch(IOException e) {
             e.printStackTrace();
+            System.exit(1);
         }
 
         System.out.println("A connection to [" + this.socketAddress + ":" + this.socketPort +
@@ -58,11 +60,19 @@ public class TimeServiceClient {
      * @return serverRes Server-response to our the request.
      */
     public String dateFromServer() {
-        // send a date-request-event to the server
-        sendMsg(this.dateMsg);
+        String date = "";
 
-        // listen for the server-response
-        return listenMsg();
+        try {
+            // send a date-request-event to the server
+            sendMsg(this.dateMsg);
+
+            // listen for the server-response
+            date = listenMsg();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return date;
     }
 
     /**
@@ -70,11 +80,29 @@ public class TimeServiceClient {
      * @return serverRes Server-response to our the request.
      */
     public String timeFromServer() {
-        // send a time-request-event to the server
-        sendMsg(this.timeMsg);
+        String time = "";
 
-        // listen for the server-response
-        return listenMsg();
+        try {
+            // send a time-request-event to the server
+            sendMsg(this.timeMsg);
+
+            // listen for the server-response
+            time = listenMsg();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return time;
+    }
+
+    public void closeConnection() {
+        try {
+            this.serverWriter.close();
+            this.socket.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**
@@ -82,23 +110,18 @@ public class TimeServiceClient {
      * Returns all message-strings other than the "welcome-message".
      * @return serverRes Server-response to the request.
      */
-    private String listenMsg() {
+    private String listenMsg() throws IOException {
+        String serverRes;
 
         // listen for the server-response
-        try {
-            String serverRes;
+        while((serverRes = this.serverReader.readLine()) != null) {
+            System.out.println("Server response: " + serverRes);
 
-            while((serverRes = this.serverReader.readLine()) != null) {
-                System.out.println("Server response: " + serverRes);
-
-                // stop listening if we receive another response-message than the "welcome message" (which has
-                // to be the requested data).
-                if(serverRes.indexOf(this.welcomeMsg) == -1) {
-                    return serverRes;
-                }
+            // stop listening if we receive another response-message than the "welcome message" (which has
+            // to be the requested data).
+            if(serverRes.indexOf(this.welcomeMsg) == -1) {
+                return serverRes;
             }
-        } catch(IOException e) {
-            e.printStackTrace();
         }
 
         return null;
@@ -108,13 +131,9 @@ public class TimeServiceClient {
      * Sends a message-string to the connected server via a BufferedWriter.
      * @param msg Message
      */
-    private void sendMsg(String msg) {
-        try {
-            this.serverWriter.write(msg);
-            this.serverWriter.newLine();
-            this.serverWriter.flush();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+    private void sendMsg(String msg) throws IOException {
+        this.serverWriter.write(msg);
+        this.serverWriter.newLine();
+        this.serverWriter.flush();
     }
 }

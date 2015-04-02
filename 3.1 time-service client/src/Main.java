@@ -6,5 +6,7 @@ public class Main {
         String time = clientTelnet.timeFromServer();
 
         System.out.println(time + " " + date);
+
+        clientTelnet.closeConnection();
     }
 }

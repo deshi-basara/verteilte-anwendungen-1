@@ -26,6 +26,7 @@ public class Server {
             System.out.println("Server is running on port: " + this.serverPort);
         } catch(IOException e) {
             e.printStackTrace();
+            System.exit(1);
         }
 
         // start listening for connections as long as the socket is running

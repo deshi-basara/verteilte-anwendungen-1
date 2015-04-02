@@ -9,6 +9,7 @@ public class Connection extends Thread {
 
     private Socket client = null;
     private int clientId = 0;
+    private boolean clientOk = true;
     private BufferedWriter clientWriter = null;
     private BufferedReader clientReader = null;
     private final String welcomeMsg = "time service";
@@ -34,17 +35,29 @@ public class Connection extends Thread {
             this.clientReader = new BufferedReader(new InputStreamReader(clientInput));
         } catch(IOException e) {
             e.printStackTrace();
+            this.clientOk = false;
         }
 
-        System.out.println("New client ["+ this.clientId +"] connected");
+        System.out.println("New client [" + this.clientId + "] connected");
     }
 
     public void run() {
-        // welcome the new client
-        sendMsg(this.welcomeMsg);
+        // only execute Thread as long as the client is ok/connected
+        //while(this.clientOk) {
 
-        // start listening for client messages
-        msgListener();
+            try {
+                // welcome the new client
+                sendMsg(this.welcomeMsg);
+
+                // start listening for client messages
+                msgListener();
+            } catch(IOException e) {
+                // print stack-trace and stop the Thread-execution
+                e.printStackTrace();
+                this.clientOk = false;
+            }
+
+        //}
     }
 
     /**
@@ -72,12 +85,15 @@ public class Connection extends Thread {
                     System.out.println("No matching event ... closing connection of client [" + this.clientId + "]");
 
                     this.client.close();
+                    this.clientOk = false;
                     return;
                 }
 
             }
         } catch(IOException e) {
+            // print stack-trace and stop the Thread-execution
             e.printStackTrace();
+            this.clientOk = false;
         }
 
     }
@@ -86,13 +102,9 @@ public class Connection extends Thread {
      * Sends a message-string to the connected client via a BufferedWriter.
      * @param msg Message
      */
-    private void sendMsg(String msg) {
-        try {
-            this.clientWriter.write(msg);
-            this.clientWriter.newLine();
-            this.clientWriter.flush();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+    private void sendMsg(String msg) throws IOException {
+        this.clientWriter.write(msg);
+        this.clientWriter.newLine();
+        this.clientWriter.flush();
     }
 }
