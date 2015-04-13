@@ -1,24 +1,29 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 /**
  * Created by simon on 09.04.15.
  */
 public class HttpClient {
 
+    /**
+     * Initiates a GET-request to the handend inputUrl after validating the url and
+     * returns the response's head & body.
+     * @param inputUrl
+     * @return
+     */
     public static String get(String inputUrl) {
         String baseUrl = "";
         StringBuilder response = null;
 
+        // try to parse the url
         try {
             baseUrl = buildUrl(inputUrl);
         } catch(MalformedURLException e) {
@@ -37,6 +42,12 @@ public class HttpClient {
         return response.toString();
     }
 
+    /**
+     * Builds an url with port.
+     * @param inputUrl
+     * @return
+     * @throws MalformedURLException
+     */
     private static String buildUrl(String inputUrl) throws MalformedURLException {
         URL url = new URL(inputUrl.trim());
 
@@ -50,6 +61,14 @@ public class HttpClient {
         return host + ":" + port;
     }
 
+    /**
+     * Sends a GET-request to the handend inputUrl after validating the url and
+     * returns the response's head & body.
+     * @param baseUrl
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     */
     private static StringBuilder sendGetRequest(String baseUrl) throws MalformedURLException, IOException {
         URL url = new URL(baseUrl);
 
@@ -104,6 +123,11 @@ public class HttpClient {
         return resMsg;
     }
 
+    /**
+     * Checks if the handed inputUrl is a valid url, by validating the request's response-code.
+     * @param inputUrl
+     * @return
+     */
     public static boolean doesUrlExist(String inputUrl) {
 
         try {
@@ -113,6 +137,7 @@ public class HttpClient {
             con.setRequestMethod("GET");
             con.connect();
 
+            // check response code
             if(con.getResponseCode() == 404) {
                 return false;
             }
@@ -125,6 +150,11 @@ public class HttpClient {
         return true;
     }
 
+    /**
+     * Returns the html-content of a handed inputUrl, if the url exists.
+     * @param inputUrl
+     * @return
+     */
     public static String getUrlContent(String inputUrl) {
 
         try {
@@ -134,6 +164,7 @@ public class HttpClient {
             con.setRequestMethod("GET");
             con.connect();
 
+            // valid request?
             int resCode = con.getResponseCode();
             if(resCode == 200) {
                 // get response
@@ -154,8 +185,16 @@ public class HttpClient {
         } catch(IOException e) {
             return "";
         }
+
+        return "";
     }
 
+    /**
+     * Trys to request the last modification date of a html-document.
+     * If "-1" there was nothing found.
+     * @param inputUrl
+     * @return
+     */
     public static long getChangeDate(String inputUrl) {
         try {
             // open a connection to the handed url
@@ -164,15 +203,20 @@ public class HttpClient {
             con.setRequestMethod("GET");
             con.connect();
 
+            // valid request?
             int resCode = con.getResponseCode();
             if(resCode == 200) {
-
                 long lastMod = con.getLastModified();
+
+                return lastMod;
             }
         } catch(MalformedURLException e) {
-            return null;
+            return -1;
         } catch(IOException e) {
-            return null;
+            return -1;
         }
+
+        return -1;
+
     }
 }
