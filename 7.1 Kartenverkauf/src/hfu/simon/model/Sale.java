@@ -10,7 +10,7 @@ public class Sale {
     /**
      * Attributes
      */
-    private final int ticketsAvailable = 100;
+    private int ticketsAvailable = 0;
     private Vector<Ticket> tickets = null;
 
     /**
@@ -18,7 +18,11 @@ public class Sale {
      * Creates a ticket-blueprint, a tickets-vector and inserts all
      * ticket-blueprints in the tickets-vector.
      */
-    public Sale() {
+    public Sale(int ticketsAvailable) {
+        this.ticketsAvailable = ticketsAvailable;
+
+        System.out.println("Creating " + this.ticketsAvailable + " tickets in Sale-Model.");
+
         // create vector, which holds all tickets
         this.tickets = new Vector(this.ticketsAvailable);
 
@@ -34,7 +38,7 @@ public class Sale {
      * Returns the tickets-vector.
      * @return
      */
-    public Vector getAllTickets() {
+    public Vector<Ticket> getAllTickets() {
         return this.tickets;
     }
 
@@ -131,6 +135,14 @@ public class Sale {
             }
 
         }
+    }
+
+    /**
+     * Returns the ticketCount.
+     * @return
+     */
+    public int getTicketCount() {
+        return this.ticketsAvailable;
     }
 
     /**
