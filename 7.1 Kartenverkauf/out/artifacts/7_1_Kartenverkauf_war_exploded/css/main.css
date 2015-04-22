@@ -11,11 +11,11 @@ body {
 }
 
 #ticket-grid-wrapper {
-    min-height: 60vh;
+    min-height: 55vh;
     min-width: 100vh;
 }
 #order-collapse-wrapper {
-    min-height: 39vh;
+    min-height: 43vh;
     min-width: 100vh;
 }
 

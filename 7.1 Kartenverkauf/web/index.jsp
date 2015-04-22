@@ -72,8 +72,8 @@
 		<ul class="collapsible" data-collapsible="accordion">
 			<li>
 				<div class="collapsible-header"><i class="mdi-action-account-balance-wallet"></i>Reservierung eines Tickets</div>
-				<div class="collapsible-body white">
-					<div class="row">
+				<div class="collapsible-body white center-align">
+					<form action="/sale" methode="post" class="row">
 						<div class="input-field col s6">
 							<input id="seat_number" type="text" class="validate">
 							<label for="seat_number">Sitzplatznummer</label>
@@ -82,24 +82,26 @@
 							<input id="owner_name" type="text" class="validate">
 							<label for="owner_name">Reservierungsname</label>
 						</div>
-					</div>
+						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+					</form>
 				</div>
 			</li>
 			<li>
 				<div class="collapsible-header"><i class="mdi-editor-attach-money"></i>Verkauf eines freien Tickets</div>
-				<div class="collapsible-body white">
-					<div class="row">
+				<div class="collapsible-body white left-align">
+					<form action="/sale" methode="post" class="row">
 						<div class="input-field col s6">
 							<input id="seat_number_two" type="text">
 							<label for="seat_number_two">Sitzplatznummer</label>
 						</div>
-					</div>
+						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+					</form>
 				</div>
 			</li>
 			<li>
 				<div class="collapsible-header"><i class="mdi-editor-attach-money"></i>Verkauf eines reservierten Tickets</div>
-				<div class="collapsible-body white">
-					<div class="row">
+				<div class="collapsible-body white center-align">
+					<form action="/sale" methode="post" class="row">
 						<div class="input-field col s6">
 							<input id="seat_number_three" type="text" class="validate">
 							<label for="seat_number_three">Sitzplatznummer</label>
@@ -108,26 +110,31 @@
 							<input id="owner_name_three" type="text" class="validate">
 							<label for="owner_name_three">Reservierungsname</label>
 						</div>
-					</div>
+						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+					</form>
 				</div>
 			</li>
 			<li>
 				<div class="collapsible-header"><i class="mdi-alert-warning"></i>Stornierung eines Tickets</div>
-				<div class="collapsible-body white">
-					<div class="row">
+				<div class="collapsible-body white left-align">
+					<form action="/sale" methode="post" class="row">
 						<div class="input-field col s6">
 							<input id="seat_number_four" type="text">
 							<label for="seat_number_four">Sitzplatznummer</label>
 						</div>
-					</div>
+						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+					</form>
 				</div>
 			</li>
 			<li>
 				<div class="collapsible-header"><i class="mdi-alert-warning"></i>Reservierungen aufheben</div>
-				<div class="collapsible-body white">
+				<div class="collapsible-body white left-align">
 					<p>
 						Mit dieser Operation werden: alle bestehenden Reservierungen gelöscht, ab sofort Reservierungen unterbunden
 					</p>
+					<form action="/sale" methode="post" class="row">
+						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+					</form>
 				</div>
 			</li>
 		</ul>
