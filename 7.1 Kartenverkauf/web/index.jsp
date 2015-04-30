@@ -164,6 +164,17 @@
     </div>
     <% } %>
 
+    <!-- Success-Message -->
+    <% if(request.getAttribute("error") != null) { %>
+    <div id="success-msg-wrapper">
+        <div class="card-panel z-depth-1 teal lighten-1 valign-wrapper">
+            <div class="valign white-text">
+                <i class="small mdi-alert-error"></i> Fehler: <%= request.getAttribute("error") %>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
 	<!-- Vendor-Scripts -->
 	<script src="js/jquery.min.js"></script>
 	<script src="js/materialize.min.js"></script>
