@@ -2,6 +2,7 @@ package hfu.simon.controller;
 
 import hfu.simon.model.Sale;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +23,10 @@ public class SaleController extends HttpServlet {
 
         // handle cmd
         handleCmd(cmd, request, response);
+
+        // redirect user back
+        RequestDispatcher resultView = request.getRequestDispatcher("index.jsp");
+        resultView.forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
