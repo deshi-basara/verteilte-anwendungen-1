@@ -11,15 +11,24 @@ body {
 }
 
 #ticket-grid-wrapper {
-    min-height: 55vh;
+    min-height: 54vh;
     min-width: 100vh;
 }
 #order-collapse-wrapper {
-    min-height: 43vh;
+    min-height: 44vh;
     min-width: 100vh;
+
+    overflow: hidden;
+}
+#error-msg-wrapper {
+    position: fixed;
+    bottom: 50px;
+    width: 100%;
+
+    text-align: center;
 }
 
-#random-form, #error-card, #random-card {
+#random-form, #random-card {
     width: 50%;
     margin-left: 25%;
 }
@@ -64,3 +73,53 @@ body {
     cursor: default !important;
 }
 
+/**
+ Error message
+ */
+#error-msg-wrapper .card-panel {
+    display: inline-block;
+    max-width: 60%;
+    opacity: 0;
+
+    -webkit-animation: appear 5.5s ease-in-out 0.1s forwards;
+    -o-animation: appear 5.5s ease-in-out 0.1s forwards;
+    animation: appear 5.5s ease-in-out 0.1s forwards;
+}
+#error-msg-wrapper .card-panel div {
+    line-height: 2rem;
+    vertical-align: middle;
+}
+#error-msg-wrapper .card-panel div i {
+    top: 7px;
+    margin-right: 10px;
+    position: relative;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@-webkit-keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

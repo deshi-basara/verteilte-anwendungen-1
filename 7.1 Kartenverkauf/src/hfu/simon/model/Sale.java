@@ -7,12 +7,14 @@ import java.util.Vector;
  */
 public class Sale {
 
+    private boolean debug = true;
+
     /**
      * Attributes
      */
     private int ticketsAvailable = 0;
     private Vector<Ticket> tickets = null;
-    private boolean debug = true;
+    private boolean saleEnabled = true;
 
     /**
      * Sale-constructor.
@@ -51,7 +53,12 @@ public class Sale {
      */
     public void sellTicket(int index) throws RuntimeException {
         // get the ticket, if it exists
-        Ticket ticket = this.tickets.get(index);
+        Ticket ticket;
+        try {
+            ticket = this.tickets.get(index);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Ticket not available");
+        }
 
         // still free, not sold and not booked?
         if(ticket.getFree() == 1 && ticket.getSold() == 0 && ticket.getBooked() == 0) {
@@ -60,8 +67,8 @@ public class Sale {
             ticket.setSold(1);
         }
         else {
-            // ticket already sold, throw exception
-            throw new RuntimeException("Ticket already sold");
+            // ticket already sold/booked, throw exception
+            throw new RuntimeException("Ticket not available for sale");
         }
 
         if(debug) {
@@ -78,7 +85,12 @@ public class Sale {
      */
     public void bookTicket(int index, String owner) throws RuntimeException {
         // get the ticket, if it exists
-        Ticket ticket = this.tickets.get(index);
+        Ticket ticket;
+        try {
+            ticket = this.tickets.get(index);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Ticket not available");
+        }
 
         // still free, not sold and not booked?
         if(ticket.getFree() == 1 && ticket.getSold() == 0 && ticket.getBooked() == 0) {
@@ -89,7 +101,7 @@ public class Sale {
         }
         else {
             // ticket already booked, throw exception
-            throw new RuntimeException("Ticket already booked");
+            throw new RuntimeException("Ticket not available for booking");
         }
 
         if(debug) {
@@ -105,7 +117,12 @@ public class Sale {
      */
     public void unbookTicket(int index, String owner) throws RuntimeException {
         // get the ticket, if it exists
-        Ticket ticket = this.tickets.get(index);
+        Ticket ticket;
+        try {
+            ticket = this.tickets.get(index);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Ticket not available");
+        }
 
         // is the current user the real owner of the ticket?
         if(ticket.isOwner(owner)) {
@@ -116,7 +133,7 @@ public class Sale {
         }
         else {
             // now the owner, throw exception
-            throw new RuntimeException("Not the ticket-owner");
+            throw new RuntimeException("You are not the ticket-owner");
         }
 
         if(debug) {
@@ -130,7 +147,12 @@ public class Sale {
      */
     public void unsaleTicket(int index) {
         // get the ticket, if it exists
-        Ticket ticket = this.tickets.get(index);
+        Ticket ticket;
+        try {
+            ticket = this.tickets.get(index);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Ticket not available");
+        }
 
         // reset all ticket values
         ticket.resetTicket();
@@ -157,6 +179,22 @@ public class Sale {
                 currentTicket.printTicket();
             }
         }
+    }
+
+    /**
+     * Toggles the 'saleEnabled'-state.
+     */
+    public void toggleSaleEnabled() {
+        this.saleEnabled = !this.saleEnabled;
+    }
+
+    /**
+     * Returns the 'saleEnabled'-state for disabling/enabling
+     * model-calls.
+     * @return
+     */
+    public boolean isSaleEnabled() {
+        return this.saleEnabled;
     }
 
     /**

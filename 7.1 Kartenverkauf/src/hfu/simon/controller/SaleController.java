@@ -46,37 +46,94 @@ public class SaleController extends HttpServlet {
         ServletContext sc = request.getServletContext();
         Sale saleModel = (Sale) sc.getAttribute("saleModel");
 
-        // which cmd should be executed
-        switch(cmd) {
-            case "book":
-                // get needed form values and book
-                int bookIndex = Integer.parseInt(request.getParameter("index"));
-                String bookOwner = request.getParameter("owner");
-                saleModel.bookTicket(--bookIndex, bookOwner);
+        // is the sale still enabled?
+        if(saleModel.isSaleEnabled()) {
 
-                break;
-            case "sell":
-                // get needed form values and sell
-                int sellIndex = Integer.parseInt(request.getParameter("index"));
-                saleModel.sellTicket(--sellIndex);
+            // which cmd should be executed
+            switch(cmd) {
+                case "sell":
+                    try {
+                        // get needed form values and sell
+                        int sellIndex;
+                        try {
+                            sellIndex = Integer.parseInt(request.getParameter("index"));
+                        } catch(NumberFormatException e) {
+                            throw new RuntimeException("Please enter a seat number");
+                        }
+                        saleModel.sellTicket(--sellIndex);
+                    } catch(RuntimeException e) {
+                        // error during model manipulation
+                        request.setAttribute("error", e.getMessage());
+                    }
 
-                break;
-            case "unbook":
-                // get needed form values and sell
-                int unbookIndex = Integer.parseInt(request.getParameter("index"));
-                String unbookOwner = request.getParameter("owner");
-                saleModel.unbookTicket(--unbookIndex, unbookOwner);
+                    break;
+                case "book":
+                    try {
+                        // get needed form values and book
+                        int bookIndex;
+                        String bookOwner;
+                        try {
+                            bookIndex = Integer.parseInt(request.getParameter("index"));
+                            bookOwner = request.getParameter("owner").trim();
 
-                break;
-            case "unsell":
-                int unsaleIndex = Integer.parseInt(request.getParameter("index"));
-                saleModel.unsaleTicket(--unsaleIndex);
+                            if(bookOwner.equals("")) {
+                                throw new RuntimeException("Please enter a ticket-owner");
+                            }
+                        } catch(NumberFormatException e) {
+                            throw new RuntimeException("Please enter a seat number");
+                        }
 
-                break;
-            case "unbookall":
-                saleModel.resetBookings();
+                        saleModel.bookTicket(--bookIndex, bookOwner);
+                    } catch(RuntimeException e) {
+                        // error during model manipulation
+                        request.setAttribute("error", e.getMessage());
+                    }
 
-                break;
+                    break;
+                case "unbook":
+                    try {
+                        // get needed form values and sell
+                        int unbookIndex;
+                        String unbookOwner;
+                        try {
+                            unbookIndex = Integer.parseInt(request.getParameter("index"));
+                            unbookOwner = request.getParameter("owner");
+
+                            if(unbookOwner.equals("")) {
+                                throw new RuntimeException("Please enter a ticket-owner");
+                            }
+                        } catch(NumberFormatException e) {
+                            throw new RuntimeException("Please enter a seat number");
+                        }
+
+                        saleModel.unbookTicket(--unbookIndex, unbookOwner);
+                    } catch(RuntimeException e) {
+                        // error during model manipulation
+                        request.setAttribute("error", e.getMessage());
+                    }
+
+                    break;
+                case "unsell":
+                    try {
+                        int unsaleIndex;
+                        try {
+                            unsaleIndex = Integer.parseInt(request.getParameter("index"));
+                        } catch(NumberFormatException e) {
+                            throw new RuntimeException("Please enter a seat number");
+                        }
+                        saleModel.unsaleTicket(--unsaleIndex);
+                    } catch(RuntimeException e) {
+                        // error during model manipulation
+                        request.setAttribute("error", e.getMessage());
+                    }
+
+                    break;
+                case "unbookall":
+                    saleModel.resetBookings();
+
+                    break;
+            }
+
         }
     }
 }

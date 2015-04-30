@@ -20,13 +20,14 @@
 <body class="indigo lighten-3">
 	<div id="ticket-grid-wrapper" class="container valign-wrapper center-align">
 
-		<!-- Range-form -->
+		<!-- Ticket-Grid -->
 		<div id="ticket-grid" class="valign card-panel row">
 
 			<%
 				// get all needed values for printing the ticket-grid
 				Sale saleModel = (Sale) application.getAttribute("saleModel");
 				Vector<Ticket> tickets = saleModel.getAllTickets();
+                boolean saleEnabled = saleModel.isSaleEnabled();
 				// calculate boxes
 				int ticketsAvailable = saleModel.getTicketCount();
 				int rows = ticketsAvailable / 12;
@@ -63,32 +64,21 @@
 					<div class="col s4 z-depth-1 booked">reserviert</div>
 					<div class="col s4 z-depth-1 sold">verkauft</div>
 				</div>
+
+                <% if(!saleEnabled) { %>
+                    <div class="card-panel z-depth-1 teal lighten-1">
+                        <span class="white-text">Zum jetzigen Zeitpunkt können keine Reservierungen mehr angenommen werden</span>
+                    </div>
+                <% } %>
 			</div>
 
 		</div>
-
 	</div>
 
-	<div id="order-collapse-wrapper" class="container">
+    <!-- Cmd-Forms -->
+    <div id="order-collapse-wrapper" class="container">
 
-		<ul class="collapsible" data-collapsible="accordion">
-			<li>
-				<div class="collapsible-header"><i class="mdi-action-account-balance-wallet"></i>Reservierung eines Tickets</div>
-				<div class="collapsible-body white center-align">
-					<form action="/sale" method="post" class="row">
-						<div class="input-field col s6">
-							<input id="seat_number" type="text" class="validate" name="index">
-							<label for="seat_number">Sitzplatznummer</label>
-						</div>
-						<div class="input-field col s6">
-							<input id="owner_name" type="text" class="validate" name="owner">
-							<label for="owner_name">Reservierungsname</label>
-						</div>
-						<input type="hidden" name="cmd" value="book"/>
-						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
-					</form>
-				</div>
-			</li>
+		<ul class="collapsible popout" data-collapsible="accordion">
 			<li>
 				<div class="collapsible-header"><i class="mdi-editor-attach-money"></i>Kauf eines freien Tickets</div>
 				<div class="collapsible-body white left-align">
@@ -102,8 +92,25 @@
                     </form>
                 </div>
 			</li>
+            <li>
+                <div class="collapsible-header"><i class="mdi-action-account-balance-wallet"></i>Reservierung eines Tickets</div>
+                <div class="collapsible-body white center-align">
+                    <form action="/sale" method="post" class="row">
+                        <div class="input-field col s6">
+                            <input id="seat_number" type="text" class="validate" name="index">
+                            <label for="seat_number">Sitzplatznummer</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="owner_name" type="text" class="validate" name="owner">
+                            <label for="owner_name">Reservierungsname</label>
+                        </div>
+                        <input type="hidden" name="cmd" value="book"/>
+                        <button type="submit" class="waves-effect waves-light btn">Ausführen</button>
+                    </form>
+                </div>
+            </li>
 			<li>
-				<div class="collapsible-header"><i class="mdi-editor-attach-money"></i>Verkauf eines reservierten Tickets</div>
+				<div class="collapsible-header"><i class="mdi-action-account-balance-wallet"></i>Verkauf eines reservierten Tickets</div>
 				<div class="collapsible-body white center-align">
 					<form action="/sale" method="post" class="row">
 						<div class="input-field col s6">
@@ -134,10 +141,10 @@
 			</li>
 			<li>
 				<div class="collapsible-header"><i class="mdi-alert-warning"></i>Reservierungen aufheben</div>
-				<div class="collapsible-body white left-align">
-                    Mit dieser Operation werden: alle bestehenden Reservierungen gelöscht, ab sofort Reservierungen unterbunden
+				<div class="collapsible-body white center-align">
+                    Mit dieser Operation werden: alle bestehenden Reservierungen gelöscht und ab sofort Reservierungen unterbunden
                     <p></p>
-					<form action="/sale" method="post" class="row center-align">
+					<form action="/sale" method="post" class="row">
 						<input type="hidden" name="cmd" value="unbookall"/>
 						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
 					</form>
@@ -146,10 +153,20 @@
 		</ul>
 	</div>
 
+    <!-- Error-Message -->
+    <% if(request.getAttribute("error") != null) { %>
+    <div id="error-msg-wrapper">
+        <div class="card-panel z-depth-1 teal lighten-1 valign-wrapper">
+            <div class="valign white-text">
+                <i class="small mdi-alert-error"></i> Fehler: <%= request.getAttribute("error") %>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
 	<!-- Vendor-Scripts -->
 	<script src="js/jquery.min.js"></script>
 	<script src="js/materialize.min.js"></script>
-
 
 </body>
 </html>
