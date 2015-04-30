@@ -1,5 +1,7 @@
 <%@ page import="hfu.simon.model.*" %>
 <%@ page import="java.util.Vector" %>
+
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -83,7 +85,7 @@
 							<label for="owner_name">Reservierungsname</label>
 						</div>
 						<input type="hidden" name="cmd" value="book"/>
-						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
 					</form>
 				</div>
 			</li>
@@ -96,7 +98,7 @@
 							<label for="seat_number_two">Sitzplatznummer</label>
 						</div>
 						<input type="hidden" name="cmd" value="sell"/>
-						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
 					</form>
 				</div>
 			</li>
@@ -113,7 +115,7 @@
 							<label for="owner_name_three">Reservierungsname</label>
 						</div>
 						<input type="hidden" name="cmd" value="unbook"/>
-						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
 					</form>
 				</div>
 			</li>
@@ -126,7 +128,7 @@
 							<label for="seat_number_four">Sitzplatznummer</label>
 						</div>
 						<input type="hidden" name="cmd" value="unsell"/>
-						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
 					</form>
 				</div>
 			</li>
@@ -138,7 +140,7 @@
 					</p>
 					<form action="/sale" methode="post" class="row">
 						<input type="hidden" name="cmd" value="unbookall"/>
-						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
+						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
 					</form>
 				</div>
 			</li>

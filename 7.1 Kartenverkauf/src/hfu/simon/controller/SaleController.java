@@ -22,13 +22,19 @@ public class SaleController extends HttpServlet {
 
         // handle cmd
         handleCmd(cmd, request, response);
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        // do nothing
     }
 
+    /**
+     * Verifies which html-form was submitted and executes saleModel-operations
+     * if the 'submitted'-cmd is available.
+     * @param cmd
+     * @param request
+     * @param response
+     */
     private void handleCmd(String cmd, HttpServletRequest request, HttpServletResponse response) {
 
         // get saleModel
@@ -41,25 +47,25 @@ public class SaleController extends HttpServlet {
                 // get needed form values and book
                 int bookIndex = Integer.parseInt(request.getParameter("index"));
                 String bookOwner = request.getParameter("owner");
-                saleModel.bookTicket(bookIndex, bookOwner);
+                saleModel.bookTicket(--bookIndex, bookOwner);
 
                 break;
             case "sell":
                 // get needed form values and sell
                 int sellIndex = Integer.parseInt(request.getParameter("index"));
-                saleModel.sellTicket(sellIndex);
+                saleModel.sellTicket(--sellIndex);
 
                 break;
             case "unbook":
                 // get needed form values and sell
                 int unbookIndex = Integer.parseInt(request.getParameter("index"));
                 String unbookOwner = request.getParameter("owner");
-                saleModel.unbookTicket(unbookIndex, unbookOwner);
+                saleModel.unbookTicket(--unbookIndex, unbookOwner);
 
                 break;
             case "unsale":
                 int unsaleIndex = Integer.parseInt(request.getParameter("index"));
-                saleModel.unsaleTicket(unsaleIndex);
+                saleModel.unsaleTicket(--unsaleIndex);
 
                 break;
             case "unbookall":
