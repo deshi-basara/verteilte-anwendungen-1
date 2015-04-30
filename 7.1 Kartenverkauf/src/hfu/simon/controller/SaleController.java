@@ -22,7 +22,7 @@ public class SaleController extends HttpServlet {
         String cmd = request.getParameter("cmd");
 
         // handle cmd
-        handleCmd(cmd, request, response);
+        handleCmd(cmd, request);
 
         // redirect user back
         RequestDispatcher resultView = request.getRequestDispatcher("index.jsp");
@@ -38,9 +38,8 @@ public class SaleController extends HttpServlet {
      * if the 'submitted'-cmd is available.
      * @param cmd
      * @param request
-     * @param response
      */
-    private void handleCmd(String cmd, HttpServletRequest request, HttpServletResponse response) {
+    private void handleCmd(String cmd, HttpServletRequest request) {
 
         // get saleModel
         ServletContext sc = request.getServletContext();
@@ -64,6 +63,8 @@ public class SaleController extends HttpServlet {
                     } catch(RuntimeException e) {
                         // error during model manipulation
                         request.setAttribute("error", e.getMessage());
+
+                        return;
                     }
 
                     break;
@@ -87,6 +88,8 @@ public class SaleController extends HttpServlet {
                     } catch(RuntimeException e) {
                         // error during model manipulation
                         request.setAttribute("error", e.getMessage());
+
+                        return;
                     }
 
                     break;
@@ -110,6 +113,8 @@ public class SaleController extends HttpServlet {
                     } catch(RuntimeException e) {
                         // error during model manipulation
                         request.setAttribute("error", e.getMessage());
+
+                        return;
                     }
 
                     break;
@@ -125,6 +130,8 @@ public class SaleController extends HttpServlet {
                     } catch(RuntimeException e) {
                         // error during model manipulation
                         request.setAttribute("error", e.getMessage());
+
+                        return;
                     }
 
                     break;
@@ -134,6 +141,7 @@ public class SaleController extends HttpServlet {
                     break;
             }
 
+            request.setAttribute("success", "success");
         }
     }
 }

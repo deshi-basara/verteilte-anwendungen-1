@@ -17,10 +17,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 </head>
-<body class="indigo lighten-3">
+<body>
 	<div id="ticket-grid-wrapper" class="container valign-wrapper center-align">
 
-		<!-- Ticket-Grid -->
+        <!-- Ticket-Grid -->
 		<div id="ticket-grid" class="valign card-panel row">
 
 			<%
@@ -156,7 +156,7 @@
     <!-- Error-Message -->
     <% if(request.getAttribute("error") != null) { %>
     <div id="error-msg-wrapper">
-        <div class="card-panel z-depth-1 teal lighten-1 valign-wrapper">
+        <div class="card-panel z-depth-1 valign-wrapper">
             <div class="valign white-text">
                 <i class="small mdi-alert-error"></i> Fehler: <%= request.getAttribute("error") %>
             </div>
@@ -165,11 +165,11 @@
     <% } %>
 
     <!-- Success-Message -->
-    <% if(request.getAttribute("error") != null) { %>
+    <% if(request.getAttribute("success") != null) { %>
     <div id="success-msg-wrapper">
-        <div class="card-panel z-depth-1 teal lighten-1 valign-wrapper">
+        <div class="card-panel z-depth-1 valign-wrapper">
             <div class="valign white-text">
-                <i class="small mdi-alert-error"></i> Fehler: <%= request.getAttribute("error") %>
+                <i class="small mdi-navigation-check"></i> Operation erfolgreich ausgeführt
             </div>
         </div>
     </div>
