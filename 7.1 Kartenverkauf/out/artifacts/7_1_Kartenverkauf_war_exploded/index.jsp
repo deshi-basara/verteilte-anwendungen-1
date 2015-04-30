@@ -147,51 +147,78 @@
 					<li>
 						<div class="collapsible-header"><i class="mdi-alert-warning"></i>Reservierungen aufheben</div>
 						<div class="collapsible-body white center-align">
-							<p>
-								Mit dieser Operation werden alle bestehenden Reservierungen gelöscht und ab sofort Reservierungen unterbunden/wider aufgenommen
-							</p>
-							<form action="/sale" method="post" class="row">
-								<input type="hidden" name="cmd" value="unbookall"/>
+							<div class="col s6">
+								<p>
+									Mit dieser Operation werden alle bestehenden Reservierungen gelöscht und ab sofort Reservierungen unterbunden/erneut aufgenommen
+								</p>
+								<form action="/sale" method="post" class="row">
+									<input type="hidden" name="cmd" value="unbookall"/>
 
-								<% if(saleEnabled) { %>
-								<button type="submit" class="waves-effect waves-light btn btn2">Verkauf deaktivieren</button>
-								<% } else { %>
-								<button type="submit" class="waves-effect waves-light btn">Verkauf aktivieren</button>
-								<% } %>
+									<% if(saleEnabled) { %>
+									<button type="submit" class="waves-effect waves-light btn btn2">Sofort deaktivieren</button>
+									<% } else { %>
+									<button type="submit" class="waves-effect waves-light btn">Sofort aktivieren</button>
+									<% } %>
 
-							</form>
+								</form>
+							</div>
+							<div class="col s6">
+								<form action="/sale" method="post" class="row">
+									<div class="input-field col s3 custom-label">
+										Event-Termin:
+									</div>
+									<div class="input-field col s3">
+										<input id="date" type="date" class="datepicker validate" name="date">
+									</div>
+									<div class="input-field col s6">
+										<input id="time" type="number" class="validate" name="time">
+										<label for="time">Vor Beginn deaktivieren in Minuten</label>
+									</div>
+									<input type="hidden" name="cmd" value="unbookall"/>
+
+									<button type="submit" class="waves-effect waves-light btn btn2 custom-button">Zeitgesteuert deaktivieren</button>
+								</form>
+							</div>
 						</div>
 					</li>
 				</ul>
 			</div>
-
-			<!-- Error-Message -->
-			<% if(request.getAttribute("error") != null) { %>
-			<div id="error-msg-wrapper">
-				<div class="card-panel z-depth-1 valign-wrapper">
-					<div class="valign white-text">
-						<i class="small mdi-alert-error"></i> Fehler: <%= request.getAttribute("error") %>
-					</div>
-				</div>
-			</div>
-			<% } %>
-
-			<!-- Success-Message -->
-			<% if(request.getAttribute("success") != null) { %>
-			<div id="success-msg-wrapper">
-				<div class="card-panel z-depth-1 valign-wrapper">
-					<div class="valign white-text">
-						<i class="small mdi-navigation-check"></i> Operation erfolgreich ausgeführt
-					</div>
-				</div>
-			</div>
-			<% } %>
 		</div>
 	</div>
+
+	<!-- Error-Message -->
+	<% if(request.getAttribute("error") != null) { %>
+	<div id="error-msg-wrapper">
+		<div class="card-panel z-depth-1 valign-wrapper">
+			<div class="valign white-text">
+				<i class="small mdi-alert-error"></i> Fehler: <%= request.getAttribute("error") %>
+			</div>
+		</div>
+	</div>
+	<% } %>
+
+	<!-- Success-Message -->
+	<% if(request.getAttribute("success") != null) { %>
+	<div id="success-msg-wrapper">
+		<div class="card-panel z-depth-1 valign-wrapper">
+			<div class="valign white-text">
+				<i class="small mdi-navigation-check"></i> Operation erfolgreich ausgeführt
+			</div>
+		</div>
+	</div>
+	<% } %>
 
 	<!-- Vendor-Scripts -->
 	<script src="js/jquery.min.js"></script>
 	<script src="js/materialize.min.js"></script>
+
+	<!-- Custom-scripts -->
+	<scripts>
+		$('.datepicker').pickadate({
+			selectMonths: true, // Creates a dropdown to control month
+			selectYears: 15 // Creates a dropdown of 15 years to control year
+		});
+	</scripts>
 
 </body>
 </html>

@@ -108,7 +108,6 @@ body {
  */
 #error-msg-wrapper .card-panel {
     display: inline-block;
-    max-width: 60%;
     opacity: 0;
 
     background-color: #7E57C2;
@@ -182,6 +181,9 @@ body {
     position: relative;
 }
 
+/**
+ Overwrite defaults
+ */
 .btn {
     background: #2196F3 !important;
 }
@@ -196,4 +198,11 @@ input[type=text]:focus:not([readonly]) {
 }
 input[type=text]:focus:not([readonly])+label {
     color: #2196F3 !important;
+}
+
+.custom-label {
+    margin-top: 28px;
+}
+.custom-button {
+    margin-top: 30px;
 }

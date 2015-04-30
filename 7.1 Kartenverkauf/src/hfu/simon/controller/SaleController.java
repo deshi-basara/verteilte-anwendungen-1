@@ -141,6 +141,8 @@ public class SaleController extends HttpServlet {
                 saleModel.toggleSaleEnabled();
 
                 break;
+            default:
+                return;
         }
 
         request.setAttribute("success", "success");
