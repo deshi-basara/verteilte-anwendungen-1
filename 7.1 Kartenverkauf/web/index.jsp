@@ -90,11 +90,11 @@
 				</div>
 			</li>
 			<li>
-				<div class="collapsible-header"><i class="mdi-editor-attach-money"></i>Verkauf eines freien Tickets</div>
+				<div class="collapsible-header"><i class="mdi-editor-attach-money"></i>Kauf eines freien Tickets</div>
 				<div class="collapsible-body white left-align">
 					<form action="/sale" method="post" class="row">
 						<div class="input-field col s6">
-							<input id="seat_number_two" type="text">
+							<input id="seat_number_two" type="text" name="index">
 							<label for="seat_number_two">Sitzplatznummer</label>
 						</div>
 						<input type="hidden" name="cmd" value="sell"/>
@@ -107,11 +107,11 @@
 				<div class="collapsible-body white center-align">
 					<form action="/sale" method="post" class="row">
 						<div class="input-field col s6">
-							<input id="seat_number_three" type="text" class="validate">
+							<input id="seat_number_three" type="text" class="validate" name="index">
 							<label for="seat_number_three">Sitzplatznummer</label>
 						</div>
 						<div class="input-field col s6">
-							<input id="owner_name_three" type="text" class="validate">
+							<input id="owner_name_three" type="text" class="validate" name="owner">
 							<label for="owner_name_three">Reservierungsname</label>
 						</div>
 						<input type="hidden" name="cmd" value="unbook"/>
@@ -124,7 +124,7 @@
 				<div class="collapsible-body white left-align">
 					<form action="/sale" methode="post" class="row">
 						<div class="input-field col s6">
-							<input id="seat_number_four" type="text">
+							<input id="seat_number_four" type="text" name="index">
 							<label for="seat_number_four">Sitzplatznummer</label>
 						</div>
 						<input type="hidden" name="cmd" value="unsell"/>

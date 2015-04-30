@@ -45,7 +45,7 @@ body {
     -o-transition: all 1s;
     transition: all 1s;
 }
-#ticket-grid .ticket:hover {
+#ticket-grid .ticket:hover:not(.booked):not(.sold) {
     background-color: #26a69a;
     color: #FFFFFF;
 
@@ -56,10 +56,11 @@ body {
 .col.booked {
     background-color: #64b5f6;
     color: #FFFFFF;
+    cursor: default !important;
 }
 .col.sold {
     background-color: #bdbdbd;
     color: #FFFFFF;
-    cursor: default;
+    cursor: default !important;
 }
 
