@@ -79,7 +79,7 @@
 			</div>
 
 			<!-- Cmd-Forms -->
-			<div id="order-collapse-wrapper" class="row">
+			<div id="order-collapse-wrapper" class="row left-align">
 
 				<ul class="collapsible popout" data-collapsible="accordion">
 					<li>
