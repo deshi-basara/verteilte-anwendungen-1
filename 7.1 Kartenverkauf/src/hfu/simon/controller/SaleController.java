@@ -46,7 +46,7 @@ public class SaleController extends HttpServlet {
         Sale saleModel = (Sale) sc.getAttribute("saleModel");
 
         // is the sale still enabled?
-        if(saleModel.isSaleEnabled()) {
+        if(saleModel.isSaleEnabled() || cmd.equals("unbookall")) {
 
             // which cmd should be executed
             switch(cmd) {
@@ -136,7 +136,9 @@ public class SaleController extends HttpServlet {
 
                     break;
                 case "unbookall":
+                    // reset and toggle active state
                     saleModel.resetBookings();
+                    saleModel.toggleSaleEnabled();
 
                     break;
             }

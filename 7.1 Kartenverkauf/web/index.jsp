@@ -66,8 +66,8 @@
 				</div>
 
                 <% if(!saleEnabled) { %>
-                    <div class="card-panel z-depth-1 teal lighten-1">
-                        <span class="white-text">Zum jetzigen Zeitpunkt können keine Reservierungen mehr angenommen werden</span>
+                    <div class="z-depth-1">
+                        <p class="black-text">Zum jetzigen Zeitpunkt können keine Reservierungen mehr angenommen werden</p>
                     </div>
                 <% } %>
 			</div>
@@ -92,23 +92,25 @@
                     </form>
                 </div>
 			</li>
-            <li>
-                <div class="collapsible-header"><i class="mdi-action-account-balance-wallet"></i>Reservierung eines Tickets</div>
-                <div class="collapsible-body white center-align">
-                    <form action="/sale" method="post" class="row">
-                        <div class="input-field col s6">
-                            <input id="seat_number" type="text" class="validate" name="index">
-                            <label for="seat_number">Sitzplatznummer</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <input id="owner_name" type="text" class="validate" name="owner">
-                            <label for="owner_name">Reservierungsname</label>
-                        </div>
-                        <input type="hidden" name="cmd" value="book"/>
-                        <button type="submit" class="waves-effect waves-light btn">Ausführen</button>
-                    </form>
-                </div>
-            </li>
+            <% if(saleEnabled) { %>
+                <li>
+                    <div class="collapsible-header"><i class="mdi-action-account-balance-wallet"></i>Reservierung eines Tickets</div>
+                    <div class="collapsible-body white center-align">
+                        <form action="/sale" method="post" class="row">
+                            <div class="input-field col s6">
+                                <input id="seat_number" type="text" class="validate" name="index">
+                                <label for="seat_number">Sitzplatznummer</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="owner_name" type="text" class="validate" name="owner">
+                                <label for="owner_name">Reservierungsname</label>
+                            </div>
+                            <input type="hidden" name="cmd" value="book"/>
+                            <button type="submit" class="waves-effect waves-light btn">Ausführen</button>
+                        </form>
+                    </div>
+                </li>
+            <% } %>
 			<li>
 				<div class="collapsible-header"><i class="mdi-action-account-balance-wallet"></i>Verkauf eines reservierten Tickets</div>
 				<div class="collapsible-body white center-align">
@@ -142,12 +144,19 @@
 			<li>
 				<div class="collapsible-header"><i class="mdi-alert-warning"></i>Reservierungen aufheben</div>
 				<div class="collapsible-body white center-align">
-                    Mit dieser Operation werden: alle bestehenden Reservierungen gelöscht und ab sofort Reservierungen unterbunden
-                    <p></p>
+                    <p>
+                    Mit dieser Operation werden alle bestehenden Reservierungen gelöscht und ab sofort Reservierungen unterbunden/wider aufgenommen
+                    </p>
 					<form action="/sale" method="post" class="row">
 						<input type="hidden" name="cmd" value="unbookall"/>
-						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
-					</form>
+
+                        <% if(saleEnabled) { %>
+                            <button type="submit" class="waves-effect waves-light btn btn2">Verkauf deaktivieren</button>
+                        <% } else { %>
+                            <button type="submit" class="waves-effect waves-light btn">Verkauf aktivieren</button>
+                        <% } %>
+
+                    </form>
 				</div>
 			</li>
 		</ul>

@@ -186,6 +186,10 @@ public class Sale {
      */
     public void toggleSaleEnabled() {
         this.saleEnabled = !this.saleEnabled;
+
+        if(debug) {
+            System.out.println("Sale is enabled: " + this.saleEnabled);
+        }
     }
 
     /**
