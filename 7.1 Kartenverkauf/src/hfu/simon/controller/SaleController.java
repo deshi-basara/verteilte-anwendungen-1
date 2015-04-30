@@ -45,30 +45,29 @@ public class SaleController extends HttpServlet {
         ServletContext sc = request.getServletContext();
         Sale saleModel = (Sale) sc.getAttribute("saleModel");
 
-        // is the sale still enabled?
-        if(saleModel.isSaleEnabled() || cmd.equals("unbookall")) {
-
-            // which cmd should be executed
-            switch(cmd) {
-                case "sell":
+        // which cmd should be executed
+        switch(cmd) {
+            case "sell":
+                try {
+                    // get needed form values and sell
+                    int sellIndex;
                     try {
-                        // get needed form values and sell
-                        int sellIndex;
-                        try {
-                            sellIndex = Integer.parseInt(request.getParameter("index"));
-                        } catch(NumberFormatException e) {
-                            throw new RuntimeException("Please enter a seat number");
-                        }
-                        saleModel.sellTicket(--sellIndex);
-                    } catch(RuntimeException e) {
-                        // error during model manipulation
-                        request.setAttribute("error", e.getMessage());
-
-                        return;
+                        sellIndex = Integer.parseInt(request.getParameter("index"));
+                    } catch(NumberFormatException e) {
+                        throw new RuntimeException("Please enter a seat number");
                     }
+                    saleModel.sellTicket(--sellIndex);
+                } catch(RuntimeException e) {
+                    // error during model manipulation
+                    request.setAttribute("error", e.getMessage());
 
-                    break;
-                case "book":
+                    return;
+                }
+
+                break;
+            case "book":
+                // booking still enabled?
+                if(saleModel.isSaleEnabled()) {
                     try {
                         // get needed form values and book
                         int bookIndex;
@@ -91,59 +90,59 @@ public class SaleController extends HttpServlet {
 
                         return;
                     }
+                }
 
-                    break;
-                case "unbook":
+                break;
+            case "unbook":
+                try {
+                    // get needed form values and sell
+                    int unbookIndex;
+                    String unbookOwner;
                     try {
-                        // get needed form values and sell
-                        int unbookIndex;
-                        String unbookOwner;
-                        try {
-                            unbookIndex = Integer.parseInt(request.getParameter("index"));
-                            unbookOwner = request.getParameter("owner");
+                        unbookIndex = Integer.parseInt(request.getParameter("index"));
+                        unbookOwner = request.getParameter("owner");
 
-                            if(unbookOwner.equals("")) {
-                                throw new RuntimeException("Please enter a ticket-owner");
-                            }
-                        } catch(NumberFormatException e) {
-                            throw new RuntimeException("Please enter a seat number");
+                        if(unbookOwner.equals("")) {
+                            throw new RuntimeException("Please enter a ticket-owner");
                         }
-
-                        saleModel.unbookTicket(--unbookIndex, unbookOwner);
-                    } catch(RuntimeException e) {
-                        // error during model manipulation
-                        request.setAttribute("error", e.getMessage());
-
-                        return;
+                    } catch(NumberFormatException e) {
+                        throw new RuntimeException("Please enter a seat number");
                     }
 
-                    break;
-                case "unsell":
+                    saleModel.unbookTicket(--unbookIndex, unbookOwner);
+                } catch(RuntimeException e) {
+                    // error during model manipulation
+                    request.setAttribute("error", e.getMessage());
+
+                    return;
+                }
+
+                break;
+            case "unsell":
+                try {
+                    int unsaleIndex;
                     try {
-                        int unsaleIndex;
-                        try {
-                            unsaleIndex = Integer.parseInt(request.getParameter("index"));
-                        } catch(NumberFormatException e) {
-                            throw new RuntimeException("Please enter a seat number");
-                        }
-                        saleModel.unsaleTicket(--unsaleIndex);
-                    } catch(RuntimeException e) {
-                        // error during model manipulation
-                        request.setAttribute("error", e.getMessage());
-
-                        return;
+                        unsaleIndex = Integer.parseInt(request.getParameter("index"));
+                    } catch(NumberFormatException e) {
+                        throw new RuntimeException("Please enter a seat number");
                     }
+                    saleModel.unsaleTicket(--unsaleIndex);
+                } catch(RuntimeException e) {
+                    // error during model manipulation
+                    request.setAttribute("error", e.getMessage());
 
-                    break;
-                case "unbookall":
-                    // reset and toggle active state
-                    saleModel.resetBookings();
-                    saleModel.toggleSaleEnabled();
+                    return;
+                }
 
-                    break;
-            }
+                break;
+            case "unbookall":
+                // reset and toggle active state
+                saleModel.resetBookings();
+                saleModel.toggleSaleEnabled();
 
-            request.setAttribute("success", "success");
+                break;
         }
+
+        request.setAttribute("success", "success");
     }
 }
