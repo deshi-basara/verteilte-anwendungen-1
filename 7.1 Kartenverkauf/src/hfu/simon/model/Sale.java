@@ -50,7 +50,7 @@ public class Sale {
      */
     public void sellTicket(int index) throws RuntimeException {
         // get the ticket, if it exists
-        Ticket ticket = (Ticket) this.tickets.get(index);
+        Ticket ticket = this.tickets.get(index);
 
         // still free, not sold and not booked?
         if(ticket.getFree() == 1 && ticket.getSold() == 0 && ticket.getBooked() == 0) {
@@ -68,17 +68,19 @@ public class Sale {
      * Tries to mark a ticket as booked, after verifying that the ticket is
      * still available for booking.
      * @param index
+     * @param owner
      * @throws RuntimeException
      */
-    public void bookTicket(int index) throws RuntimeException {
+    public void bookTicket(int index, String owner) throws RuntimeException {
         // get the ticket, if it exists
-        Ticket ticket = (Ticket) this.tickets.get(index);
+        Ticket ticket = this.tickets.get(index);
 
         // still free, not sold and not booked?
         if(ticket.getFree() == 1 && ticket.getSold() == 0 && ticket.getBooked() == 0) {
             // ticket still free, book it
             ticket.setFree(0);
             ticket.setBooked(1);
+            ticket.setOwner(owner);
         }
         else {
             // ticket already booked, throw exception
@@ -92,9 +94,9 @@ public class Sale {
      * @param owner
      * @throws RuntimeException
      */
-    public void sellBooked(int index, String owner) throws RuntimeException {
+    public void unbookTicket(int index, String owner) throws RuntimeException {
         // get the ticket, if it exists
-        Ticket ticket = (Ticket) this.tickets.get(index);
+        Ticket ticket = this.tickets.get(index);
 
         // is the current user the real owner of the ticket?
         if(ticket.isOwner(owner)) {
@@ -113,7 +115,7 @@ public class Sale {
      * Resets a ticket to its default values.
      * @param index
      */
-    public void resetTicket(int index) {
+    public void unsaleTicket(int index) {
         // get the ticket, if it exists
         Ticket ticket = this.tickets.get(index);
 

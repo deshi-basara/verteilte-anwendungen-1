@@ -82,6 +82,7 @@
 							<input id="owner_name" type="text" class="validate">
 							<label for="owner_name">Reservierungsname</label>
 						</div>
+						<input type="hidden" name="cmd" value="verkaufe"/>
 						<button type="submit" class="waves-effect waves-light btn">Asuführen</button>
 					</form>
 				</div>
