@@ -1,5 +1,7 @@
 <%@ page import="hfu.simon.model.*" %>
 <%@ page import="java.util.Vector" %>
+
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
