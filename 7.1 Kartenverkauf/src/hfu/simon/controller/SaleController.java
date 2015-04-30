@@ -68,7 +68,7 @@ public class SaleController extends HttpServlet {
                 saleModel.unbookTicket(--unbookIndex, unbookOwner);
 
                 break;
-            case "unsale":
+            case "unsell":
                 int unsaleIndex = Integer.parseInt(request.getParameter("index"));
                 saleModel.unsaleTicket(--unsaleIndex);
 

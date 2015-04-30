@@ -92,15 +92,15 @@
 			<li>
 				<div class="collapsible-header"><i class="mdi-editor-attach-money"></i>Kauf eines freien Tickets</div>
 				<div class="collapsible-body white left-align">
-					<form action="/sale" method="post" class="row">
-						<div class="input-field col s6">
+					<form action="/sale" method="post" class="row center-align">
+						<div class="input-field col s12">
 							<input id="seat_number_two" type="text" name="index">
 							<label for="seat_number_two">Sitzplatznummer</label>
 						</div>
 						<input type="hidden" name="cmd" value="sell"/>
-						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
-					</form>
-				</div>
+                        <button type="submit" class="waves-effect waves-light btn">Ausführen</button>
+                    </form>
+                </div>
 			</li>
 			<li>
 				<div class="collapsible-header"><i class="mdi-editor-attach-money"></i>Verkauf eines reservierten Tickets</div>
@@ -122,8 +122,8 @@
 			<li>
 				<div class="collapsible-header"><i class="mdi-alert-warning"></i>Stornierung eines Tickets</div>
 				<div class="collapsible-body white left-align">
-					<form action="/sale" methode="post" class="row">
-						<div class="input-field col s6">
+					<form action="/sale" method="post" class="row center-align">
+						<div class="input-field col s12">
 							<input id="seat_number_four" type="text" name="index">
 							<label for="seat_number_four">Sitzplatznummer</label>
 						</div>
@@ -135,10 +135,9 @@
 			<li>
 				<div class="collapsible-header"><i class="mdi-alert-warning"></i>Reservierungen aufheben</div>
 				<div class="collapsible-body white left-align">
-					<p>
-						Mit dieser Operation werden: alle bestehenden Reservierungen gelöscht, ab sofort Reservierungen unterbunden
-					</p>
-					<form action="/sale" methode="post" class="row">
+                    Mit dieser Operation werden: alle bestehenden Reservierungen gelöscht, ab sofort Reservierungen unterbunden
+                    <p></p>
+					<form action="/sale" method="post" class="row center-align">
 						<input type="hidden" name="cmd" value="unbookall"/>
 						<button type="submit" class="waves-effect waves-light btn">Ausführen</button>
 					</form>

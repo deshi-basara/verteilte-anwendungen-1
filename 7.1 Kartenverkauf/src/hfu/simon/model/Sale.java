@@ -12,6 +12,7 @@ public class Sale {
      */
     private int ticketsAvailable = 0;
     private Vector<Ticket> tickets = null;
+    private boolean debug = true;
 
     /**
      * Sale-constructor.
@@ -62,6 +63,10 @@ public class Sale {
             // ticket already sold, throw exception
             throw new RuntimeException("Ticket already sold");
         }
+
+        if(debug) {
+            ticket.printTicket();
+        }
     }
 
     /**
@@ -86,6 +91,10 @@ public class Sale {
             // ticket already booked, throw exception
             throw new RuntimeException("Ticket already booked");
         }
+
+        if(debug) {
+            ticket.printTicket();
+        }
     }
 
     /**
@@ -109,6 +118,10 @@ public class Sale {
             // now the owner, throw exception
             throw new RuntimeException("Not the ticket-owner");
         }
+
+        if(debug) {
+            ticket.printTicket();
+        }
     }
 
     /**
@@ -121,6 +134,10 @@ public class Sale {
 
         // reset all ticket values
         ticket.resetTicket();
+
+        if(debug) {
+            ticket.printTicket();
+        }
     }
 
     /**
@@ -136,6 +153,9 @@ public class Sale {
                 currentTicket.resetBooking();
             }
 
+            if(debug) {
+                currentTicket.printTicket();
+            }
         }
     }
 

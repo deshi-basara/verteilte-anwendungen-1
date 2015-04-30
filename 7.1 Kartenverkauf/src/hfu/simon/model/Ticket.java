@@ -140,4 +140,18 @@ public class Ticket {
         this.owner = "";
     }
 
+    /**
+     * Prints the ticket's model data (for debugging).
+     */
+    public void printTicket() {
+        System.out.println("==============================");
+        System.out.println("Ticket Number: " + this.index);
+        System.out.println("Enabled: " + this.enabled);
+        System.out.println("Free: " + this.free);
+        System.out.println("Booked: " + this.booked);
+        System.out.println("Sold: " + this.sold);
+        System.out.println("Owner: " + this.owner);
+        System.out.println("==============================");
+    }
+
 }
