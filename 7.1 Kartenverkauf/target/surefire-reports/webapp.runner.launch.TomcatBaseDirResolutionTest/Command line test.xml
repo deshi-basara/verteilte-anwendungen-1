@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite hostname="arche" name="webapp.runner.launch.TomcatBaseDirResolutionTest" tests="4" failures="0" timestamp="1 May 2015 12:05:04 GMT" time="0.025" errors="0">
-  <testcase name="testBaseDirAlreadyExists" time="0.005" classname="webapp.runner.launch.TomcatBaseDirResolutionTest"/>
-  <testcase name="testBaseDirAlreadyExistsAsFile" time="0.001" classname="webapp.runner.launch.TomcatBaseDirResolutionTest"/>
-  <testcase name="testBaseDirNotExists" time="0.001" classname="webapp.runner.launch.TomcatBaseDirResolutionTest"/>
-  <testcase name="testSuggestBaseDir" time="0.001" classname="webapp.runner.launch.TomcatBaseDirResolutionTest"/>
-</testsuite>
