@@ -164,17 +164,17 @@
 							</div>
 							<div class="col s6">
 								<form action="/sale" method="post" class="row">
-									<div class="input-field col s3 custom-label">
-										Event-Termin:
+									<div class="input-field col s6 custom-label">
+										Deaktiviere Reservierungen am:
 									</div>
 									<div class="input-field col s3">
 										<input id="date" type="date" class="datepicker validate" name="date">
 									</div>
-									<div class="input-field col s6">
-										<input id="time" type="number" class="validate" name="time">
-										<label for="time">Vor Beginn deaktivieren in Minuten</label>
+									<div id="time" class="input-field col s3">
+										<input type="time" class="validate" name="time"><span>Uhr</span>
+										<!--<label for="time">Vor Beginn deaktivieren in Minuten</label>-->
 									</div>
-									<input type="hidden" name="cmd" value="unbookall"/>
+									<input type="hidden" name="cmd" value="disablebooking"/>
 
 									<button type="submit" class="waves-effect waves-light btn btn2 custom-button">Zeitgesteuert deaktivieren</button>
 								</form>
@@ -210,15 +210,15 @@
 
 	<!-- Vendor-Scripts -->
 	<script src="js/jquery.min.js"></script>
-	<script src="js/materialize.min.js"></script>
+	<script src="js/materialize.js"></script>
 
 	<!-- Custom-scripts -->
-	<scripts>
+	<script>
 		$('.datepicker').pickadate({
 			selectMonths: true, // Creates a dropdown to control month
 			selectYears: 15 // Creates a dropdown of 15 years to control year
 		});
-	</scripts>
+	</script>
 
 </body>
 </html>
