@@ -1,5 +1,7 @@
 package hfu.simon.model;
 
+import hfu.simon.helper.TimedTask;
+
 import java.util.Vector;
 
 /**
@@ -15,6 +17,7 @@ public class Sale {
     private int ticketsAvailable = 0;
     private Vector<Ticket> tickets = null;
     private boolean saleEnabled = true;
+    private TimedTask task = null;
 
     /**
      * Sale-constructor.
@@ -193,6 +196,17 @@ public class Sale {
     }
 
     /**
+     * Disables the 'saleEnabled'-state (for timed tasks)
+     */
+    public void disableSaleEnabled() {
+        this.saleEnabled = false;
+
+        if(debug) {
+            System.out.println("Sale is enabled: " + this.saleEnabled);
+        }
+    }
+
+    /**
      * Returns the 'saleEnabled'-state for disabling/enabling
      * model-calls.
      * @return
@@ -207,6 +221,22 @@ public class Sale {
      */
     public int getTicketCount() {
         return this.ticketsAvailable;
+    }
+
+    /**
+     * If a TimedTask was associated to the model, it will be saved
+     * as an attribute for later manipulation.
+     */
+    public void setTimedTask(TimedTask task) {
+        this.task = task;
+    }
+
+    /**
+     * Returns the TimedTask of this model.
+     * @return task
+     */
+    public TimedTask getTimedTask() {
+        return this.task;
     }
 
     /**

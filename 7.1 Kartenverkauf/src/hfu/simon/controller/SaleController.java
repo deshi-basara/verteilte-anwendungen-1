@@ -1,5 +1,6 @@
 package hfu.simon.controller;
 
+import hfu.simon.helper.TimedTask;
 import hfu.simon.model.Sale;
 
 import javax.servlet.RequestDispatcher;
@@ -10,13 +11,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.IllegalFormatException;
+import java.util.Locale;
+import java.util.Timer;
 
 /**
  * Created by simon on 22.04.15.
  */
 //@WebServlet(name = "SaleController")
 public class SaleController extends HttpServlet {
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // get execution cmd
         String cmd = request.getParameter("cmd");
@@ -29,6 +37,7 @@ public class SaleController extends HttpServlet {
         resultView.forward(request, response);
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // do nothing
     }
@@ -141,10 +150,49 @@ public class SaleController extends HttpServlet {
                 saleModel.toggleSaleEnabled();
 
                 break;
+            case "disablebooking":
+                try {
+                    String eventDate = request.getParameter("date");
+                    String stopTime = request.getParameter("time");
+
+                    if(eventDate.equals("") || stopTime.equals("")) {
+                        throw new RuntimeException("Please enter a valid deactivation time");
+                    }
+
+                    // try to parse the date
+                    Date date;
+                    try {
+                        // create a new date-format
+                        SimpleDateFormat html5Date = new SimpleDateFormat("d MMMM, yyyy hh:mm", Locale.ENGLISH);
+                        date = html5Date.parse(eventDate + ' ' + stopTime);
+                    } catch(ParseException e) {
+                        throw new RuntimeException("Coud not parse handed date and time");
+                    }
+
+                    // we have a valid date, check if the was already a timer defined for the model
+                    TimedTask modelTask = saleModel.getTimedTask();
+                    if(modelTask != null) {
+                        // already a timer defined, cancel it first
+                        modelTask.stopExecution();
+                    }
+
+                    // start new timer and set it in the model
+                    TimedTask task = new TimedTask(date, saleModel);
+                    saleModel.setTimedTask(task);
+
+                } catch(RuntimeException e) {
+                    request.setAttribute("error", e.getMessage());
+
+                    return;
+                }
+
+                break;
             default:
+                // not a valid 'cmd' handed, stop execution
                 return;
         }
 
+        // everything went well, show default success message on forward
         request.setAttribute("success", "success");
     }
 }

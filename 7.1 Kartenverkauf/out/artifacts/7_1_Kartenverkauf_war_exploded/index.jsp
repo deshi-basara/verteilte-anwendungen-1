@@ -1,5 +1,6 @@
 <%@ page import="hfu.simon.model.*" %>
 <%@ page import="java.util.Vector" %>
+<%@ page import="hfu.simon.helper.TimedTask" %>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
@@ -31,6 +32,7 @@
 						Sale saleModel = (Sale) application.getAttribute("saleModel");
 						Vector<Ticket> tickets = saleModel.getAllTickets();
 						boolean saleEnabled = saleModel.isSaleEnabled();
+						TimedTask task = saleModel.getTimedTask();
 						// calculate boxes
 						int ticketsAvailable = saleModel.getTicketCount();
 						int rows = ticketsAvailable / 12;
@@ -145,7 +147,14 @@
 						</div>
 					</li>
 					<li>
-						<div class="collapsible-header"><i class="mdi-alert-warning"></i>Reservierungen aufheben</div>
+						<div class="collapsible-header">
+							<i class="mdi-alert-warning"></i>Reservierungen aufheben
+
+							<!-- Does our model have a TimedTask? -->
+							<% if(task != null) { %>
+								<span class="badge">Zeitgesteuerte Deaktivierung: <%= task.getExecutionTime() %></span>
+							<% } %>
+						</div>
 						<div class="collapsible-body white center-align">
 							<div class="col s6">
 								<p>
@@ -168,7 +177,7 @@
 										Deaktiviere Reservierungen am:
 									</div>
 									<div class="input-field col s3">
-										<input id="date" type="date" class="datepicker validate" name="date">
+										<input id="date" type="date" class="datepicker" name="date">
 									</div>
 									<div id="time" class="input-field col s3">
 										<input type="time" class="validate" name="time"><span>Uhr</span>
