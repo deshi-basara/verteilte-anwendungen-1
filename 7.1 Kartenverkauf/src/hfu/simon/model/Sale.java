@@ -54,7 +54,7 @@ public class Sale {
      * @param index
      * @throws RuntimeException
      */
-    public void sellTicket(int index) throws RuntimeException {
+    public synchronized void sellTicket(int index) throws RuntimeException {
         // get the ticket, if it exists
         Ticket ticket;
         try {
@@ -86,7 +86,7 @@ public class Sale {
      * @param owner
      * @throws RuntimeException
      */
-    public void bookTicket(int index, String owner) throws RuntimeException {
+    public synchronized void bookTicket(int index, String owner) throws RuntimeException {
         // get the ticket, if it exists
         Ticket ticket;
         try {
@@ -118,7 +118,7 @@ public class Sale {
      * @param owner
      * @throws RuntimeException
      */
-    public void unbookTicket(int index, String owner) throws RuntimeException {
+    public synchronized void unbookTicket(int index, String owner) throws RuntimeException {
         // get the ticket, if it exists
         Ticket ticket;
         try {
@@ -148,7 +148,7 @@ public class Sale {
      * Resets a ticket to its default values.
      * @param index
      */
-    public void unsaleTicket(int index) {
+    public synchronized void unsaleTicket(int index) {
         // get the ticket, if it exists
         Ticket ticket;
         try {
@@ -168,7 +168,7 @@ public class Sale {
     /**
      * Resets all booked tickets to unbooked.
      */
-    public void resetBookings() {
+    public synchronized void resetBookings() {
         // loop through all tickets and check if they are booked
         for(Ticket currentTicket : this.tickets) {
 
@@ -187,7 +187,7 @@ public class Sale {
     /**
      * Toggles the 'saleEnabled'-state.
      */
-    public void toggleSaleEnabled() {
+    public synchronized void toggleSaleEnabled() {
         this.saleEnabled = !this.saleEnabled;
 
         if(debug) {
@@ -198,12 +198,20 @@ public class Sale {
     /**
      * Disables the 'saleEnabled'-state (for timed tasks)
      */
-    public void disableSaleEnabled() {
+    public synchronized void disableSaleEnabled() {
         this.saleEnabled = false;
 
         if(debug) {
             System.out.println("Sale is enabled: " + this.saleEnabled);
         }
+    }
+
+    /**
+     * If a TimedTask was associated to the model, it will be saved
+     * as an attribute for later manipulation.
+     */
+    public synchronized void setTimedTask(TimedTask task) {
+        this.task = task;
     }
 
     /**
@@ -221,14 +229,6 @@ public class Sale {
      */
     public int getTicketCount() {
         return this.ticketsAvailable;
-    }
-
-    /**
-     * If a TimedTask was associated to the model, it will be saved
-     * as an attribute for later manipulation.
-     */
-    public void setTimedTask(TimedTask task) {
-        this.task = task;
     }
 
     /**
