@@ -70,6 +70,7 @@ public class TimedTask {
         public void run() {
             saleModel.disableSaleEnabled();
             saleModel.resetBookings();
+            saleModel.setTimedTask(null);
 
             // disable timer, after execution
             timer.cancel();
