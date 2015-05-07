@@ -18,14 +18,22 @@ public class SaleListener implements ServletContextListener {
      public void contextInitialized(ServletContextEvent event) {
          // get init-parameters
          ServletContext sc = event.getServletContext();
-         int ticketsAvailable = Integer.parseInt(sc.getInitParameter("ticketsAvailable"));
+
+         int ticketsAvailable = Integer.parseInt(sc.getInitParameter("tickets-available"));
+         String databaseHost = sc.getInitParameter("database-host");
+         int databasePort = Integer.parseInt(sc.getInitParameter("database-port"));
+         String databaseName = sc.getInitParameter("database-name");
+         String databaseUser = sc.getInitParameter("database-user");
+         String databasePassword = sc.getInitParameter("database-password");
 
          // create sale-model and set it as context-attribute
          Sale saleModel = new Sale(ticketsAvailable);
          sc.setAttribute("saleModel", saleModel);
 
          // create a database connection
-         SaleDB saleDBModel = new SaleDB();
+         SaleDB saleDBModel = new SaleDB(ticketsAvailable, databaseHost, databasePort,
+                 databaseName, databaseUser, databasePassword);
+         sc.setAttribute("saleDBModel", saleDBModel);
      }
 
     @Override
