@@ -74,6 +74,8 @@ public class TimedTask {
 
             // disable timer, after execution
             timer.cancel();
+
+            System.out.println("Timed task #" + taskIndex + " executed.");
         }
     }
 }
