@@ -20,8 +20,13 @@ public class Ticket {
      * Sets the index of the ticket.
      * @param index
      */
-    public Ticket(int index) {
+    public Ticket(int index, int enabled, int free, int booked, int sold, String owner) {
         this.index = index;
+        this.enabled = enabled;
+        this.free = free;
+        this.booked = booked;
+        this.sold = sold;
+        this.owner = owner;
     }
 
     /**

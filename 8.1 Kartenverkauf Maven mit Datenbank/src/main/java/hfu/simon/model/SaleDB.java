@@ -4,6 +4,9 @@ import hfu.simon.helper.TimedTask;
 import org.postgresql.ds.PGPoolingDataSource;
 
 import java.sql.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Vector;
 
 /**
  * Handles sales in a persistent postgreSQL Database
@@ -112,6 +115,7 @@ public class SaleDB {
      */
     public void sellTicket(int index) throws RuntimeException {
         String sellSql = "SELECT * FROM tickets WHERE id=" + String.valueOf(index);
+        System.out.println(sellSql);
         Statement sellStatement = null;
         try {
             sellStatement = this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -131,6 +135,9 @@ public class SaleDB {
                     // update row
                     results.updateRow();
                 }
+            }
+            else {
+                throw new RuntimeException("Kein gültiger Sitzplatz");
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -175,6 +182,9 @@ public class SaleDB {
                     results.updateRow();
                 }
             }
+            else {
+                throw new RuntimeException("Kein gültiger Sitzplatz");
+            }
         } catch(SQLException e) {
             e.printStackTrace();
         } finally {
@@ -218,8 +228,11 @@ public class SaleDB {
                 }
                 else {
                     // now the owner, throw exception
-                    throw new RuntimeException("You are not the ticket-owner");
+                    throw new RuntimeException("Du bist nicht der Ticket-Besitzer");
                 }
+            }
+            else {
+                throw new RuntimeException("Kein gültiger Sitzplatz");
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -240,6 +253,7 @@ public class SaleDB {
      */
     public void unsaleTicket(int index) {
         String unsaleSql = "SELECT * FROM tickets WHERE id=" + String.valueOf(index);
+        System.out.println(unsaleSql);
         Statement bookStatement = null;
         try {
             bookStatement = this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -255,6 +269,9 @@ public class SaleDB {
                 results.updateString("owner", "");
                 // update row
                 results.updateRow();
+            }
+            else {
+                throw new RuntimeException("Kein gültiger Sitzplatz");
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -280,11 +297,12 @@ public class SaleDB {
                     ResultSet.CONCUR_UPDATABLE);
             ResultSet results = bookStatement.executeQuery(unsaleSql);
 
-            // was there a result?
-            if(results.next()) {
+            // loop through all results
+            while(results.next()) {
                 // reset ticket
                 results.updateInt("free", 1);
                 results.updateInt("booked", 0);
+                results.updateInt("sold", 0);
                 results.updateString("owner", "");
                 // update row
                 results.updateRow();
@@ -348,5 +366,56 @@ public class SaleDB {
     public TimedTask getTimedTask() {
         return this.task;
     }
+
+    /**
+     * Fetches all tickets from the database, converts them into ticket-objects and returns the tickets-vector.
+     * @return
+     */
+    public Vector<Ticket> getAllTickets() {
+        Vector<Ticket> tickets = new Vector(this.ticketCount);
+
+        // get all tickets
+        String allSql = "SELECT * FROM tickets ORDER BY id ASC";
+        Statement allStatement = null;
+        try {
+            allStatement = this.connection.createStatement();
+            ResultSet results = allStatement.executeQuery(allSql);
+
+            // loop through all results
+            int pointer = 0;
+            while(results.next()) {
+                // get all needed values
+                int index = results.getInt("id");
+                int isEnabled = results.getInt("enabled");
+                int isFree = results.getInt("free");
+                int isBooked = results.getInt("booked");
+                int isSold = results.getInt("sold");
+                String owner = results.getString("owner");
+
+                // create a new Ticket-model
+                Ticket blueprint = new Ticket(index, isEnabled, isFree, isBooked, isSold, owner);
+                //blueprint.printTicket();
+
+                tickets.add(pointer, blueprint);
+                pointer++;
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(allStatement != null) {
+                try {
+                    allStatement.close();
+                } catch(SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // reverse all vector elements to correct the wrong item order from the ResultSet
+        //Collections.reverse(tickets);
+
+        return tickets;
+    }
+
 
 }
