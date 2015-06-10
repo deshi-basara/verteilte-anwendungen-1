@@ -1,6 +1,6 @@
 package hfu.simon.helper;
 
-import hfu.simon.model.Sale;
+import hfu.simon.model.SaleDB;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,14 +22,14 @@ public class TimedTask {
     private Timer timer = new Timer();
     private TimerTask timerTask = null;
     private Date executionTime;
-    private Sale saleModel;
+    private SaleDB saleModel;
 
     /**
      * Sets object-parameters and schedules timer.
      * @param stopDate
      * @param saleModel
      */
-    public TimedTask(Date stopDate, Sale saleModel) {
+    public TimedTask(Date stopDate, SaleDB saleModel) {
         this.executionTime = stopDate;
         this.saleModel = saleModel;
         this.taskIndex++;

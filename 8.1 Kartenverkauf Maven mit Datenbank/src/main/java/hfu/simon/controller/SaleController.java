@@ -164,7 +164,7 @@ public class SaleController extends HttpServlet {
                         SimpleDateFormat html5Date = new SimpleDateFormat("d MMMM, yyyy hh:mm", Locale.ENGLISH);
                         date = html5Date.parse(eventDate + ' ' + stopTime);
                     } catch(ParseException e) {
-                        throw new RuntimeException("Coud not parse handed date and time");
+                        throw new RuntimeException("Could not parse handed date and time");
                     }
 
                     // we have a valid date, check if the was already a timer defined for the model
@@ -175,9 +175,8 @@ public class SaleController extends HttpServlet {
                     }
 
                     // start new timer and set it in the model
-                    //TimedTask task = new TimedTask(date, saleModel);
-                    //saleModel.setTimedTask(task);
-                    //@todo timed task
+                    TimedTask task = new TimedTask(date, saleModel);
+                    saleModel.setTimedTask(task);
 
                 } catch(RuntimeException e) {
                     request.setAttribute("error", e.getMessage());
