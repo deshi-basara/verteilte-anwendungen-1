@@ -2,6 +2,7 @@ package hfu.simon.controller;
 
 import hfu.simon.helper.TimedTask;
 import hfu.simon.model.Sale;
+import hfu.simon.model.SaleDB;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -26,7 +27,7 @@ public class SaleController extends HttpServlet {
         String cmd = request.getParameter("cmd");
 
         // handle cmd
-        handleCmd(cmd, request);
+        handleCmdDB(cmd, request);
 
         // redirect user back
         RequestDispatcher resultView = request.getRequestDispatcher("index.jsp");
@@ -44,11 +45,12 @@ public class SaleController extends HttpServlet {
      * @param cmd
      * @param request
      */
-    private void handleCmd(String cmd, HttpServletRequest request) {
+    private void handleCmdDB(String cmd, HttpServletRequest request) {
+        System.out.println("Request handled by database.");
 
         // get saleModel
         ServletContext sc = request.getServletContext();
-        Sale saleModel = (Sale) sc.getAttribute("saleModel");
+        SaleDB saleModel = (SaleDB) sc.getAttribute("saleModel");
 
         // which cmd should be executed
         switch(cmd) {
@@ -173,8 +175,9 @@ public class SaleController extends HttpServlet {
                     }
 
                     // start new timer and set it in the model
-                    TimedTask task = new TimedTask(date, saleModel);
-                    saleModel.setTimedTask(task);
+                    //TimedTask task = new TimedTask(date, saleModel);
+                    //saleModel.setTimedTask(task);
+                    //@todo timed task
 
                 } catch(RuntimeException e) {
                     request.setAttribute("error", e.getMessage());

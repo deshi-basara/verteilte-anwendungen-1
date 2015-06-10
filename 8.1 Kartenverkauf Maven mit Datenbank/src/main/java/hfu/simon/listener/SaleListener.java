@@ -26,14 +26,11 @@ public class SaleListener implements ServletContextListener {
          String databaseUser = sc.getInitParameter("database-user");
          String databasePassword = sc.getInitParameter("database-password");
 
-         // create sale-model and set it as context-attribute
-         Sale saleModel = new Sale(ticketsAvailable);
-         sc.setAttribute("saleModel", saleModel);
-
          // create a database connection
          SaleDB saleDBModel = new SaleDB(ticketsAvailable, databaseHost, databasePort,
                  databaseName, databaseUser, databasePassword);
-         sc.setAttribute("saleDBModel", saleDBModel);
+         sc.setAttribute("saleModel", saleDBModel);
+
      }
 
     @Override
