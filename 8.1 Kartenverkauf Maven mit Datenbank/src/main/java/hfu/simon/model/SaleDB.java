@@ -4,9 +4,12 @@ import hfu.simon.helper.TimedTask;
 import org.postgresql.ds.PGPoolingDataSource;
 
 import java.sql.*;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Vector;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Handles sales in a persistent postgreSQL Database
@@ -45,23 +48,24 @@ public class SaleDB {
         this.dbPass = dbPass;
 
         connect();
+        init();
     }
 
     /**
      * Tries to establish a connection to the database.
      */
     private void connect() {
-        System.out.println("Connection to postgreSQL: " + this.dbHost +":"+ this.dbPort +"/" + this.dbName);
+        System.out.println("Connection to postgreSQL: " + this.dbHost + ":" + this.dbPort + "/" + this.dbName);
         try {
             // returns the Class object associated with the class or interface with the given string name
             Class.forName("org.postgresql.Driver");
             // connect
             this.connection = DriverManager
-                    .getConnection("jdbc:postgresql://"+ this.dbHost +":"+ this.dbPort +"/" + this.dbName,
+                    .getConnection("jdbc:postgresql://" + this.dbHost + ":" + this.dbPort + "/" + this.dbName,
                             this.dbUser, this.dbPass);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
         System.out.println("Opened database successfully");
@@ -80,27 +84,27 @@ public class SaleDB {
             ResultSet results = initStatement.executeQuery();
 
             // results already has values, skip initialization
-            if(results.next()) {
+            if (results.next()) {
                 return;
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         // initialize tickets-table
         String insertSql = "INSERT INTO tickets (id) values ";
-        for(int i = 0; i < this.ticketCount; i++) {
-            insertSql += "("+ i +")";
+        for (int i = 0; i < this.ticketCount; i++) {
+            insertSql += "(" + i + ")";
 
             // not last value?
-            if((i+1) != this.ticketCount) {
+            if ((i + 1) != this.ticketCount) {
                 insertSql += ",";
             }
         }
         try {
             PreparedStatement insertStatement = this.connection.prepareStatement(insertSql);
             insertStatement.executeQuery();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -110,6 +114,7 @@ public class SaleDB {
     /**
      * Tries to mark a ticket as sold, after verifying, that the ticket is
      * still available.
+     *
      * @param index
      * @throws RuntimeException
      */
@@ -123,29 +128,28 @@ public class SaleDB {
             ResultSet results = sellStatement.executeQuery(sellSql);
 
             // was there a result?
-            if(results.next()) {
+            if (results.next()) {
                 int isFree = results.getInt("free");
                 int isBooked = results.getInt("booked");
                 int isSold = results.getInt("sold");
 
                 // still free?
-                if(isFree == 1 && isSold == 0 && isBooked == 0) {
+                if (isFree == 1 && isSold == 0 && isBooked == 0) {
                     results.updateInt("free", 0);
                     results.updateInt("sold", 1);
                     // update row
                     results.updateRow();
                 }
-            }
-            else {
+            } else {
                 throw new RuntimeException("Kein gültiger Sitzplatz");
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(sellStatement != null) {
+            if (sellStatement != null) {
                 try {
                     sellStatement.close();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
@@ -155,6 +159,7 @@ public class SaleDB {
     /**
      * Tries to mark a ticket as booked, after verifying that the ticket is
      * still available for booking.
+     *
      * @param index
      * @param owner
      * @throws RuntimeException
@@ -168,30 +173,29 @@ public class SaleDB {
             ResultSet results = bookStatement.executeQuery(bookSql);
 
             // was there a result?
-            if(results.next()) {
+            if (results.next()) {
                 int isFree = results.getInt("free");
                 int isBooked = results.getInt("booked");
                 int isSold = results.getInt("sold");
 
                 // still free?
-                if(isFree == 1 && isSold == 0 && isBooked == 0) {
+                if (isFree == 1 && isSold == 0 && isBooked == 0) {
                     results.updateInt("free", 0);
                     results.updateInt("booked", 1);
                     results.updateString("owner", owner);
                     // update row
                     results.updateRow();
                 }
-            }
-            else {
+            } else {
                 throw new RuntimeException("Kein gültiger Sitzplatz");
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(bookStatement != null) {
+            if (bookStatement != null) {
                 try {
                     bookStatement.close();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
@@ -200,6 +204,7 @@ public class SaleDB {
 
     /**
      * Sells a ticket back, if the request was started by the ticket-owner.
+     *
      * @param index
      * @param owner
      * @throws RuntimeException
@@ -213,11 +218,11 @@ public class SaleDB {
             ResultSet results = bookStatement.executeQuery(unbookSql);
 
             // was there a result?
-            if(results.next()) {
+            if (results.next()) {
                 String currentOwner = results.getString("owner");
 
                 // is owner?
-                if(currentOwner.equals(owner)) {
+                if (currentOwner.equals(owner)) {
                     // is owner, mark as free again
                     results.updateInt("free", 1);
                     results.updateInt("booked", 0);
@@ -225,22 +230,20 @@ public class SaleDB {
                     results.updateString("owner", "");
                     // update row
                     results.updateRow();
-                }
-                else {
+                } else {
                     // now the owner, throw exception
                     throw new RuntimeException("Du bist nicht der Ticket-Besitzer");
                 }
-            }
-            else {
+            } else {
                 throw new RuntimeException("Kein gültiger Sitzplatz");
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(bookStatement != null) {
+            if (bookStatement != null) {
                 try {
                     bookStatement.close();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
@@ -249,6 +252,7 @@ public class SaleDB {
 
     /**
      * Resets a ticket to its default values.
+     *
      * @param index
      */
     public void unsaleTicket(int index) {
@@ -261,7 +265,7 @@ public class SaleDB {
             ResultSet results = bookStatement.executeQuery(unsaleSql);
 
             // was there a result?
-            if(results.next()) {
+            if (results.next()) {
                 // reset ticket
                 results.updateInt("free", 1);
                 results.updateInt("booked", 0);
@@ -269,17 +273,16 @@ public class SaleDB {
                 results.updateString("owner", "");
                 // update row
                 results.updateRow();
-            }
-            else {
+            } else {
                 throw new RuntimeException("Kein gültiger Sitzplatz");
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(bookStatement != null) {
+            if (bookStatement != null) {
                 try {
                     bookStatement.close();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
@@ -298,7 +301,7 @@ public class SaleDB {
             ResultSet results = bookStatement.executeQuery(unsaleSql);
 
             // loop through all results
-            while(results.next()) {
+            while (results.next()) {
                 // reset ticket
                 results.updateInt("free", 1);
                 results.updateInt("booked", 0);
@@ -307,13 +310,13 @@ public class SaleDB {
                 // update row
                 results.updateRow();
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(bookStatement != null) {
+            if (bookStatement != null) {
                 try {
                     bookStatement.close();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
@@ -345,6 +348,7 @@ public class SaleDB {
     /**
      * Returns the 'saleEnabled'-state for disabling/enabling
      * model-calls.
+     *
      * @return
      */
     public boolean isSaleEnabled() {
@@ -353,6 +357,7 @@ public class SaleDB {
 
     /**
      * Returns the ticketCount.
+     *
      * @return
      */
     public int getTicketCount() {
@@ -361,6 +366,7 @@ public class SaleDB {
 
     /**
      * Returns the TimedTask of this model.
+     *
      * @return task
      */
     public TimedTask getTimedTask() {
@@ -369,6 +375,7 @@ public class SaleDB {
 
     /**
      * Fetches all tickets from the database, converts them into ticket-objects and returns the tickets-vector.
+     *
      * @return
      */
     public Vector<Ticket> getAllTickets() {
@@ -383,7 +390,7 @@ public class SaleDB {
 
             // loop through all results
             int pointer = 0;
-            while(results.next()) {
+            while (results.next()) {
                 // get all needed values
                 int index = results.getInt("id");
                 int isEnabled = results.getInt("enabled");
@@ -399,13 +406,13 @@ public class SaleDB {
                 tickets.add(pointer, blueprint);
                 pointer++;
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(allStatement != null) {
+            if (allStatement != null) {
                 try {
                     allStatement.close();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
@@ -416,6 +423,4 @@ public class SaleDB {
 
         return tickets;
     }
-
-
 }

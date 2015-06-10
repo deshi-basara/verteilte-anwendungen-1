@@ -1,0 +1,3 @@
+- Zeitgesteuert (Thread der auf Sleep gestellt wird)
+- Mehrere Sitze auf einmal
+- Custom tags
