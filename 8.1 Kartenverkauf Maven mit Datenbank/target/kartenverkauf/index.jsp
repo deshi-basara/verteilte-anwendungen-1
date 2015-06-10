@@ -29,7 +29,7 @@
 
 					<%
 						// get all needed values for printing the ticket-grid
-						Sale saleModel = (Sale) application.getAttribute("saleModel");
+						SaleDB saleModel = (SaleDB) application.getAttribute("saleModel");
 						Vector<Ticket> tickets = saleModel.getAllTickets();
 						boolean saleEnabled = saleModel.isSaleEnabled();
 						TimedTask task = saleModel.getTimedTask();

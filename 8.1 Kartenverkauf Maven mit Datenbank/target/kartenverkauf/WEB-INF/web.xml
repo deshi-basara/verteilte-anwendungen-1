@@ -18,10 +18,6 @@
             <param-name>tickets-available</param-name>
             <param-value>108</param-value>
         </context-param>
-        <context-param>
-            <param-name>database-enabled</param-name>
-            <param-value>true</param-value>
-        </context-param>
 
         <!-- Database parameters -->
         <context-param>

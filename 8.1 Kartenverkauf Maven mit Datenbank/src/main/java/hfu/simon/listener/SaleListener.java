@@ -1,6 +1,5 @@
 package hfu.simon.listener;
 
-import hfu.simon.model.Sale;
 import hfu.simon.model.SaleDB;
 
 import javax.servlet.ServletContext;
