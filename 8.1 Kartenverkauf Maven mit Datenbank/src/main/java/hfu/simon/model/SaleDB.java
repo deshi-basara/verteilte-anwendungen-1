@@ -47,6 +47,14 @@ public class SaleDB {
         this.dbUser = dbUser;
         this.dbPass = dbPass;
 
+        // set dataSource
+        dataSource.setDataSourceName("Localhost");
+        dataSource.setServerName(this.dbHost);
+        dataSource.setDatabaseName(this.dbName);
+        dataSource.setUser(this.dbUser);
+        dataSource.setPassword(this.dbPass);
+        dataSource.setMaxConnections(10);
+
         connect();
         init();
     }
@@ -58,11 +66,14 @@ public class SaleDB {
         System.out.println("Connection to postgreSQL: " + this.dbHost + ":" + this.dbPort + "/" + this.dbName);
         try {
             // returns the Class object associated with the class or interface with the given string name
-            Class.forName("org.postgresql.Driver");
+            //Class.forName("org.postgresql.Driver");
             // connect
-            this.connection = DriverManager
+            /*this.connection = DriverManager
                     .getConnection("jdbc:postgresql://" + this.dbHost + ":" + this.dbPort + "/" + this.dbName,
-                            this.dbUser, this.dbPass);
+                            this.dbUser, this.dbPass);*/
+
+            // use the dataSource object for connection
+            this.connection = dataSource.getConnection();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
