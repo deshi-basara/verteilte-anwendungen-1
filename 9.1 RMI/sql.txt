@@ -1,0 +1,8 @@
+CREATE TABLE tickets(
+    ID SERIAL PRIMARY KEY NOT NULL,
+    enabled integer DEFAULT 1,
+    free integer DEFAULT 1,
+    booked integer DEFAULT 0,
+    sold integer DEFAULT 0,
+    owner varchar(50)
+);
